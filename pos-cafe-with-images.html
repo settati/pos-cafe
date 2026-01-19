@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Point of Sale - Café</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .product { display: inline-block; margin: 10px; text-align: center; }
+        .cart { float: right; margin-left: 50px; }
+        .total { font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Menu</h1>
+    <div id="products">
+        <div class="product" onclick="addToCart('Café Expresso', 9.00)">
+            <img src="https://i.imgur.com/1.png" alt="Café Expresso" width="100">
+            <p>Café Expresso - 9.00 DH</p>
+        </div>
+        <div class="product" onclick="addToCart('Cappuccino', 9.00)">
+            <img src="https://i.imgur.com/2.png" alt="Cappuccino" width="100">
+            <p>Cappuccino - 9.00 DH</p>
+        </div>
+        <div class="product" onclick="addToCart('Café Latté', 9.00)">
+            <img src="https://i.imgur.com/3.png" alt="Café Latté" width="100">
+            <p>Café Latté - 9.00 DH</p>
+        </div>
+        <div class="product" onclick="addToCart('Thé', 10.00)">
+            <img src="https://i.imgur.com/4.png" alt="Thé" width="100">
+            <p>Thé - 10.00 DH</p>
+        </div>
+        <div class="product" onclick="addToCart('Sprite Canette', 12.00)">
+            <img src="https://i.imgur.com/5.png" alt="Sprite Canette" width="100">
+            <p>Sprite Canette - 12.00 DH</p>
+        </div>
+        <div class="product" onclick="addToCart('Jus d'Orange', 15.00)">
+            <img src="https://i.imgur.com/6.png" alt="Jus d'Orange" width="100">
+            <p>Jus d'Orange - 15.00 DH</p>
+        </div>
+        <div class="product" onclick="addToCart('Jus d'Avocat', 16.00)">
+            <img src="https://i.imgur.com/7.png" alt="Jus d'Avocat" width="100">
+            <p>Jus d'Avocat - 16.00 DH</p>
+        </div>
+        <div class="product" onclick="addToCart('Jus de Citron', 15.00)">
+            <img src="https://i.imgur.com/8.png" alt="Jus de Citron" width="100">
+            <p>Jus de Citron - 15.00 DH</p>
+        </div>
+        <div class="product" onclick="addToCart('Croissant', 6.00)">
+            <img src="https://i.imgur.com/9.png" alt="Croissant" width="100">
+            <p>Croissant - 6.00 DH</p>
+        </div>
+        <div class="product" onclick="addToCart('Petit Pain', 7.00)">
+            <img src="https://i.imgur.com/10.png" alt="Petit Pain" width="100">
+            <p>Petit Pain - 7.00 DH</p>
+        </div>
+        <div class="product" onclick="addToCart('Gaufre', 12.00)">
+            <img src="https://i.imgur.com/11.png" alt="Gaufre" width="100">
+            <p>Gaufre - 12.00 DH</p>
+        </div>
+        <div class="product" onclick="addToCart('Msemen', 6.00)">
+            <img src="https://i.imgur.com/12.png" alt="Msemen" width="100">
+            <p>Msemen - 6.00 DH</p>
+        </div>
+        <div class="product" onclick="addToCart('Harcha', 5.00)">
+            <img src="https://i.imgur.com/13.png" alt="Harcha" width="100">
+            <p>Harcha - 5.00 DH</p>
+        </div>
+        <div class="product" onclick="addToCart('Ice Cream 3 Boules', 24.00)">
+            <img src="https://i.imgur.com/14.png" alt="Ice Cream 3 Boules" width="100">
+            <p>Ice Cream 3 Boules - 24.00 DH</p>
+        </div>
+        <div class="product" onclick="addToCart('Ice Cream 2 Boules', 16.00)">
+            <img src="https://i.imgur.com/15.png" alt="Ice Cream 2 Boules" width="100">
+            <p>Ice Cream 2 Boules - 16.00 DH</p>
+        </div>
+        <div class="product" onclick="addToCart('Panini', 18.00)">
+            <img src="https://i.imgur.com/16.png" alt="Panini" width="100">
+            <p>Panini - 18.00 DH</p>
+        </div>
+    </div>
+    <div class="cart">
+        <h2>Cart</h2>
+        <div id="cart-items"></div>
+        <p class="total">Total: <span id="total-price">0</span> DH</p>
+        <h3>Order Confirmation</h3>
+        <div id="order-confirmation"></div>
+        <h3>Keypad</h3>
+        <div id="keypad">
+            <button onclick="addToOrder(1)">1</button>
+            <button onclick="addToOrder(2)">2</button>
+            <button onclick="addToOrder(3)">3</button>
+            <button onclick="addToOrder(4)">4</button>
+            <button onclick="addToOrder(5)">5</button>
+            <button onclick="addToOrder(6)">6</button>
+            <button onclick="addToOrder(7)">7</button>
+            <button onclick="addToOrder(8)">8</button>
+            <button onclick="addToOrder(9)">9</button>
+            <button onclick="addToOrder(0)">0</button>
+            <button onclick="backspace()">←</button>
+            <button onclick="confirmOrder()">✔</button>
+        </div>
+    </div>
+    <script>
+        let cart = [];
+        let total = 0;
+
+        function addToCart(name, price) {
+            cart.push({name, price});
+            total += price;
+            updateCart();
+        }
+
+        function updateCart() {
+            const cartItemsDiv = document.getElementById('cart-items');
+            cartItemsDiv.innerHTML = '';
+            cart.forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.textContent = `${item.name} - ${item.price} DH`;
+                cartItemsDiv.appendChild(itemDiv);
+            });
+            document.getElementById('total-price').textContent = total.toFixed(2);
+        }
+
+        function addToOrder(number) {
+            document.getElementById('order-confirmation').innerText += number;
+        }
+
+        function backspace() {
+            const confirmation = document.getElementById('order-confirmation').innerText;
+            document.getElementById('order-confirmation').innerText = confirmation.slice(0, -1);
+        }
+
+        function confirmOrder() {
+            alert('Order confirmed: ' + document.getElementById('order-confirmation').innerText);
+            document.getElementById('order-confirmation').innerText = '';
+            cart = [];
+            total = 0;
+            updateCart();
+        }
+    </script>
+</body>
+</html>
